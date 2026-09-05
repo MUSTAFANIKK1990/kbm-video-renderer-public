@@ -1,0 +1,15 @@
+node_modules/
+out/
+work/
+public/generated/
+.tmp/
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.wav
+*.mp3
+*.srt
+*.vtt
+.env
+.env.*

@@ -1,0 +1,39 @@
+{
+  "package": "KBM-VIDEO-FACTORY-CINEMATIC-MULTI-ASSET-EDITOR-10",
+  "version": "0.10.1",
+  "durationSeconds": 18.84,
+  "mix": {
+    "narrationRole": "primary",
+    "musicRole": "support",
+    "sfxRole": "transition-accent",
+    "masterTruePeakDb": -1.0,
+    "targetIntegratedLufs": -14.0,
+    "musicGainDb": -20.5,
+    "narrationDuckMusicDb": -8.0,
+    "fadeInSeconds": 0.45,
+    "fadeOutSeconds": 1.0
+  },
+  "music": {
+    "mode": "rights-clean-procedural-industrial-cinematic",
+    "character": "low-sub-pulse-dark-industrial-air",
+    "copyrightedTrackRequired": false
+  },
+  "sfx": [
+    {"timeSeconds": 0.05, "kind": "impact", "gainDb": -7.5},
+    {"timeSeconds": 2.20, "kind": "impact", "gainDb": -6.5},
+    {"timeSeconds": 5.62, "kind": "whoosh", "gainDb": -8.0},
+    {"timeSeconds": 7.30, "kind": "whoosh", "gainDb": -9.0},
+    {"timeSeconds": 9.80, "kind": "impact", "gainDb": -9.5},
+    {"timeSeconds": 11.55, "kind": "whoosh", "gainDb": -10.0},
+    {"timeSeconds": 13.55, "kind": "riser", "gainDb": -10.0},
+    {"timeSeconds": 14.08, "kind": "whoosh", "gainDb": -8.5},
+    {"timeSeconds": 15.55, "kind": "riser", "gainDb": -9.0},
+    {"timeSeconds": 16.10, "kind": "impact", "gainDb": -6.5}
+  ],
+  "policy": {
+    "voiceMustRemainIntelligible": true,
+    "noSfxUnderCriticalWord": true,
+    "singleNarrationLane": true,
+    "noExternalCopyrightedMusic": true
+  }
+}

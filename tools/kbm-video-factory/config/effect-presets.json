@@ -1,0 +1,11 @@
+{
+  "package": "KBM-VIDEO-FACTORY-SMART-NONBLOCKING-EDITOR-09",
+  "families": {
+    "text": ["text-pop", "active-word", "number-pop", "highlight"],
+    "camera": ["punch-zoom", "slow-zoom", "pan", "freeze"],
+    "machine": ["machine-highlight", "tracking-label", "outline", "arrow"],
+    "ui": ["mobile-mockup", "touch-indicator", "screen-zoom", "swipe"],
+    "transition": ["flash-accent", "whip", "zoom", "push", "mask"],
+    "cta": ["logo-reveal", "cta-card", "rise"]
+  }
+}

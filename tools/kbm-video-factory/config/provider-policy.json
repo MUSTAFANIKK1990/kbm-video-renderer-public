@@ -1,0 +1,11 @@
+{
+  "providers": {
+    "local": {"enabled": true, "priority": 100},
+    "pexels": {"enabled": true, "priority": 70, "apiKeyEnv": "PEXELS_API_KEY", "license": "Pexels License"},
+    "pixabay": {"enabled": true, "priority": 60, "apiKeyEnv": "PIXABAY_API_KEY", "license": "Pixabay Content License"},
+    "ai-image": {"enabled": true, "priority": 50, "mode": "external-runtime-asset"},
+    "ai-video": {"enabled": false, "priority": 30, "mode": "optional-gpu-provider"}
+  },
+  "download": {"enabledByDefault": false, "maxBytesPerAsset": 41943040, "allowedHosts": ["images.pexels.com", "videos.pexels.com", "cdn.pixabay.com"]},
+  "rightsManifestRequired": true
+}

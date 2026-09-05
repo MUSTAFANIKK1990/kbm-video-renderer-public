@@ -1,0 +1,5 @@
+{
+  "minimumScore": 85,
+  "weights": {"hook": 12, "captionReadability": 16, "visualReset": 14, "assetDiversity": 12, "motion": 10, "sound": 10, "branding": 10, "cta": 8, "rights": 8},
+  "hardRules": {"duplicateCaption": 0, "captionMinPx": 64, "visualResetMaxSeconds": 3.0, "syncMaxMs": 50, "externalRightsCoverage": 1.0}
+}

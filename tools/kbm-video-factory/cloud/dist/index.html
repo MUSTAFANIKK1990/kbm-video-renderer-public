@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071b30">
+  <title>KBM Video Studio — Full Cinematic Editor</title>
+  <style>
+    :root{color-scheme:dark;--navy:#071b30;--panel:#0d2b49;--panel2:#061525;--yellow:#ffc400;--text:#f8fafc;--muted:#b7c4d2;--ok:#4ade80;--bad:#fb7185;--line:#31506c}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#020b13,var(--navy));color:var(--text);font-family:Estedad,Vazirmatn,Tahoma,sans-serif;min-height:100vh}
+    main{width:min(780px,100%);margin:auto;padding:max(20px,env(safe-area-inset-top)) 16px max(28px,env(safe-area-inset-bottom))}
+    header{margin:8px 0 24px}.eyebrow{color:var(--yellow);font-size:.78rem;letter-spacing:.08em;font-weight:800}h1{font-size:clamp(1.7rem,7vw,2.6rem);line-height:1.2;margin:.35rem 0}header p{color:var(--muted);margin:0;line-height:1.8}
+    .card{background:rgba(13,43,73,.92);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 18px 55px #0007}.grid{display:grid;gap:15px}.two{grid-template-columns:1fr 1fr}
+    label{display:block;font-size:.88rem;font-weight:700;margin:0 0 7px}.hint{display:block;color:var(--muted);font-size:.75rem;font-weight:400;margin-top:5px}
+    input,select,textarea,button{width:100%;min-height:50px;border-radius:13px;border:1px solid var(--line);font:inherit}input,select,textarea{background:var(--panel2);color:var(--text);padding:11px 13px}input[type=file]{padding:9px}textarea{min-height:118px;resize:vertical;line-height:1.9;direction:rtl}
+    button{border:0;background:var(--yellow);color:#101820;font-weight:900;padding:10px;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
+    .status{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#061525;display:none}.status.show{display:block}.status-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}.status strong{font-size:.9rem}.status span{color:var(--muted);font-size:.8rem;direction:ltr}.track{height:10px;background:#19344d;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#f59e0b,var(--yellow));transition:width .25s ease}.message{color:var(--muted);font-size:.86rem;line-height:1.8;margin:10px 0 0}.message.ok{color:var(--ok)}.message.bad{color:var(--bad)}
+    .download{display:none;margin-top:12px;text-decoration:none;background:#fff;color:#061525;text-align:center;padding:14px;border-radius:13px;font-weight:900}.download.show{display:block}
+    .security{margin-top:14px;border-right:4px solid var(--yellow);padding:10px 12px;background:#0b263f;color:var(--muted);font-size:.78rem;line-height:1.8}
+    @media(max-width:560px){.two{grid-template-columns:1fr}.card{padding:15px;border-radius:17px}main{padding-left:12px;padding-right:12px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">KARYAB MASHIN · PACKAGE 13 · FULL CINEMATIC</div>
+    <h1><span style="color:var(--yellow)">KBM</span> Video Studio</h1>
+    <p>ویدیوی خام را بده؛ سیستم سناریو، نریشن فارسی، B-roll مجاز، تصویر ثابت، کپشن، برندینگ، صدا و تدوین تبلیغاتی را آماده می‌کند.</p>
+  </header>
+  <section class="card">
+    <form id="job-form" class="grid" autocomplete="off">
+      <div>
+        <label for="token">توکن امن Studio</label>
+        <input id="token" type="password" inputmode="text" required placeholder="KBM_STUDIO_TOKEN">
+        <span class="hint">فقط در Session همین تب نگهداری می‌شود و وارد URL یا فایل خروجی نمی‌شود.</span>
+      </div>
+      <div>
+        <label for="media">ویدیوی خام</label>
+        <input id="media" type="file" accept="video/mp4,video/quicktime,video/x-m4v,video/webm,video/x-matroska" required>
+        <span class="hint">MP4، MOV، M4V، MKV یا WEBM — حداکثر ۹۵ مگابایت</span>
+      </div>
+      <div>
+        <label for="brief">موضوع و هدف تبلیغ</label>
+        <textarea id="brief" maxlength="600" required placeholder="مثال: یک ریلز تبلیغاتی پرانرژی درباره اجاره بیل مکانیکی؛ روی بررسی فنی، جک هیدرولیک و انتخاب دستگاه مناسب تمرکز کن و در پایان کاربر را به کاریاب ماشین هدایت کن."></textarea>
+        <span class="hint">حداکثر ۶۰۰ کاراکتر. سیستم از همین متن برای سناریو، نریشن فارسی و جست‌وجوی تصاویر و ویدیوهای مکمل استفاده می‌کند.</span>
+      </div>
+      <div class="two grid">
+        <div>
+          <label for="preset">سناریوی پایه</label>
+          <select id="preset">
+            <option value="auto-commercial" selected>تبلیغ خودکار بر اساس Brief</option>
+            <option value="excavator-rental-3-checks">۳ نکته اجاره بیل مکانیکی</option>
+          </select>
+        </div>
+        <div>
+          <label for="edit-style">شدت تدوین</label>
+          <select id="edit-style">
+            <option value="high-energy" selected>High Energy</option>
+            <option value="cinematic">Cinematic</option>
+            <option value="balanced">Balanced</option>
+          </select>
+        </div>
+      </div>
+      <div class="two grid">
+        <div>
+          <label for="template">قالب اصلی</label>
+          <select id="template">
+            <option value="KBM-V03-MACHINE-REVIEW">Machine Review</option>
+            <option value="KBM-V05-TECHNICAL-VFX">Technical VFX</option>
+            <option value="KBM-V06-STORY-REVEAL">Story Reveal</option>
+            <option value="KBM-V01-INFOGRAPHIC">Infographic</option>
+          </select>
+        </div>
+        <div>
+          <label for="voice">صدای فارسی</label>
+          <select id="voice">
+            <option value="alloy">Alloy</option><option value="ash">Ash</option><option value="ballad">Ballad</option>
+            <option value="coral">Coral</option><option value="echo">Echo</option><option value="fable">Fable</option>
+            <option value="nova">Nova</option><option value="onyx">Onyx</option><option value="sage">Sage</option>
+            <option value="shimmer">Shimmer</option><option value="verse">Verse</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label for="duration">حداکثر زمان خروجی</label>
+        <select id="duration"><option value="30" selected>۳۰ ثانیه</option><option value="60">۶۰ ثانیه</option><option value="90">۹۰ ثانیه</option></select>
+      </div>
+      <button id="submit" type="submit">شروع تدوین تبلیغاتی Full Cinematic</button>
+    </form>
+    <div id="status" class="status" aria-live="polite">
+      <div class="status-head"><strong id="stage">آماده</strong><span id="percent">0%</span></div>
+      <div class="track"><div id="bar" class="bar"></div></div>
+      <p id="message" class="message"></p>
+      <a id="download" class="download" href="#">دانلود MP4 نهایی</a>
+    </div>
+    <div class="security">فایل خام و خروجی در Draft Release منتشرنشده نگهداری و پس از ۴۸ ساعت پاک می‌شوند. کلیدهای GitHub، TTS و منابع رسانه‌ای هرگز وارد مرورگر نمی‌شوند.</div>
+  </section>
+</main>
+<script>
+(() => {
+  "use strict";
+  const MAX_UPLOAD_BYTES = 95 * 1024 * 1024;
+  const allowedExtensions = new Set(["mp4", "mov", "m4v", "mkv", "webm"]);
+  const transient = new Set([502, 503, 504]);
+  const $ = (id) => document.getElementById(id);
+  const form = $("job-form"), token = $("token"), media = $("media"), brief = $("brief"), submit = $("submit");
+  const statusBox = $("status"), stage = $("stage"), percent = $("percent"), bar = $("bar"), message = $("message"), download = $("download");
+  token.value = sessionStorage.getItem("kbmStudioToken") || "";
+  let polling = false;
+
+  function showStatus(title, progress, text, kind = "") {
+    statusBox.classList.add("show");
+    stage.textContent = title;
+    percent.textContent = `${Math.round(progress)}%`;
+    bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+    message.textContent = text;
+    message.className = `message ${kind}`;
+  }
+
+  function extensionOf(file) {
+    const extension = (file.name.split(".").pop() || "").toLowerCase();
+    if (!allowedExtensions.has(extension)) throw new Error("پسوند فایل ویدیو پشتیبانی نمی‌شود.");
+    return extension;
+  }
+
+  function base64UrlUtf8(text) {
+    const bytes = new TextEncoder().encode(text);
+    let binary = "";
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  }
+
+  async function api(path, options = {}, attempts = 2) {
+    const headers = new Headers(options.headers || {});
+    headers.set("Authorization", `Bearer ${token.value.trim()}`);
+    let response;
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      response = await fetch(path, {...options, headers});
+      if (!transient.has(response.status) || attempt === attempts) break;
+      await new Promise((resolve) => setTimeout(resolve, 1200 * attempt));
+    }
+    if (!response.ok) {
+      let detail = `HTTP ${response.status}`;
+      try { const body = await response.json(); detail = body.message || body.error || detail; } catch {}
+      throw new Error(detail);
+    }
+    if (response.status === 204) return null;
+    return response.json();
+  }
+
+  function uploadJob(file) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/v1/jobs");
+      xhr.timeout = 15 * 60 * 1000;
+      xhr.setRequestHeader("Authorization", `Bearer ${token.value.trim()}`);
+      xhr.setRequestHeader("Content-Type", file.type && file.type.startsWith("video/") ? file.type : "application/octet-stream");
+      xhr.setRequestHeader("X-KBM-Extension", extensionOf(file));
+      xhr.setRequestHeader("X-KBM-Preset", $("preset").value);
+      xhr.setRequestHeader("X-KBM-Template", $("template").value);
+      xhr.setRequestHeader("X-KBM-Voice", $("voice").value);
+      xhr.setRequestHeader("X-KBM-Max-Seconds", $("duration").value);
+      xhr.setRequestHeader("X-KBM-Brief-B64", base64UrlUtf8(brief.value.trim()));
+      xhr.setRequestHeader("X-KBM-Edit-Style", $("edit-style").value);
+      xhr.upload.onprogress = (event) => {
+        if (!event.lengthComputable) return;
+        showStatus("آپلود امن ویدیو", 2 + ((event.loaded / event.total) * 56), "انتقال مستقیم فایل به Job خصوصی GitHub");
+      };
+      xhr.onload = () => {
+        let body = null;
+        try { body = JSON.parse(xhr.responseText); } catch {}
+        if (xhr.status === 202 && body) resolve(body);
+        else reject(new Error((body && (body.message || body.error)) || `HTTP ${xhr.status}`));
+      };
+      xhr.onerror = () => reject(new Error("ارتباط هنگام آپلود قطع شد."));
+      xhr.ontimeout = () => reject(new Error("زمان مجاز آپلود تمام شد."));
+      xhr.send(file);
+    });
+  }
+
+  function jobQuery(job) {
+    return new URLSearchParams({releaseId: String(job.releaseId), runId: String(job.runId)});
+  }
+
+  async function pollJob(job) {
+    polling = true;
+    while (polling) {
+      const state = await api(`/v1/jobs/${job.jobId}?${jobQuery(job)}`, {method: "GET"}, 3);
+      showStatus("رندر Full Cinematic", Number(state.progress || 65), state.message || state.state, state.state === "failed" ? "bad" : "");
+      if (state.state === "ready") {
+        showStatus("ویدیو آماده است", 100, "رندر کامل شد؛ فایل MP4 را دانلود کنید.", "ok");
+        download.href = "#";
+        download.onclick = async (event) => {
+          event.preventDefault();
+          try {
+            const query = new URLSearchParams({releaseId: String(job.releaseId)});
+            const ticket = await api(`/v1/jobs/${job.jobId}/download-ticket?${query}`, {method: "POST"});
+            const link = document.createElement("a");
+            link.href = ticket.url;
+            link.download = `kbm-video-${job.jobId}.mp4`;
+            link.click();
+          } catch (error) {
+            showStatus("خطای دانلود", 100, error instanceof Error ? error.message : "دانلود شروع نشد", "bad");
+          }
+        };
+        download.classList.add("show");
+        sessionStorage.removeItem("kbmActiveJob");
+        polling = false;
+        return;
+      }
+      if (state.state === "failed") throw new Error(state.message || "رندر ناموفق بود");
+      await new Promise((resolve) => setTimeout(resolve, 7000));
+    }
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    download.classList.remove("show");
+    polling = false;
+    const file = media.files[0];
+    const campaignBrief = brief.value.trim();
+    if (!token.value.trim() || !file || campaignBrief.length < 3) return showStatus("اطلاعات ناقص", 0, "توکن، ویدیو و موضوع تبلیغ را وارد کنید.", "bad");
+    if (campaignBrief.length > 600) return showStatus("Brief طولانی است", 0, "موضوع تبلیغ باید حداکثر ۶۰۰ کاراکتر باشد.", "bad");
+    if (file.size < 1 || file.size > MAX_UPLOAD_BYTES) return showStatus("حجم نامعتبر", 0, "حجم فایل باید حداکثر ۹۵ مگابایت باشد.", "bad");
+    try { extensionOf(file); } catch (error) { return showStatus("فایل نامعتبر", 0, error.message, "bad"); }
+    sessionStorage.setItem("kbmStudioToken", token.value.trim());
+    submit.disabled = true;
+    try {
+      showStatus("شروع آپلود", 1, "Job خصوصی و منتشرنشده ساخته می‌شود");
+      const job = await uploadJob(file);
+      sessionStorage.setItem("kbmActiveJob", JSON.stringify(job));
+      showStatus("قرارگیری در صف", 60, job.message || "در انتظار GitHub Actions");
+      await pollJob(job);
+    } catch (error) {
+      polling = false;
+      showStatus("عملیات متوقف شد", 0, error instanceof Error ? error.message : "خطای ناشناخته", "bad");
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  const saved = sessionStorage.getItem("kbmActiveJob");
+  if (saved && token.value) {
+    try {
+      const job = JSON.parse(saved);
+      if (job.jobId && job.releaseId && job.runId) {
+        submit.disabled = true;
+        pollJob(job).catch((error) => showStatus("پیگیری ناموفق", 0, error.message, "bad")).finally(() => { submit.disabled = false; });
+      }
+    } catch { sessionStorage.removeItem("kbmActiveJob"); }
+  }
+})();
+</script>
+</body>
+</html>

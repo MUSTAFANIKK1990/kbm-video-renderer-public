@@ -1,0 +1,4 @@
+{
+  "industrial-pro": {"targetLufs": -14, "truePeakDb": -1.0, "musicGainDb": -20, "voicePriority": true, "events": {"hard": "impact", "push": "whoosh", "wipe": "whip", "cross-zoom": "riser", "flash": "impact", "cta": "sub-boom"}},
+  "presenter-clean": {"targetLufs": -14, "truePeakDb": -1.0, "musicGainDb": -23, "voicePriority": true, "events": {"hard": "tick", "push": "whoosh", "wipe": "whoosh", "cross-zoom": "riser", "flash": "hit", "cta": "sub-boom"}}
+}

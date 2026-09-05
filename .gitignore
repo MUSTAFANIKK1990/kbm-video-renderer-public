@@ -1,0 +1,62 @@
+# OS / Explorer files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs / temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+
+# Environment / secrets
+.env
+.env.*
+*.key
+*.pem
+*.crt
+
+# Build / archive outputs
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+dist/
+build/
+
+# Node / frontend dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Composer / test cache
+.phpunit.result.cache
+.phpunit.cache/
+coverage/
+
+# WordPress runtime/cache folders
+wp-content/cache/
+wp-content/uploads/
+cache/
+tmp/
+temp/
+
+# KBM runtime generated files
+plugins/kbm-core/storage/cache/
+plugins/kbm-core/storage/logs/
+plugins/kbm-core/storage/tmp/
+plugins/kbm-core/storage/temp/
+
+# Local backup files
+*_backup.*
+*_old.*
+*_copy.*

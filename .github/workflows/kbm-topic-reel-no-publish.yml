@@ -1,0 +1,131 @@
+name: KBM Topic to Reel (No Publish)
+run-name: KBM Topic Reel — ${{ inputs.topic }}
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: Persian Reel topic or campaign proposition
+        required: true
+        type: string
+      vertical:
+        description: KaryabMashin campaign vertical
+        required: true
+        default: machine-sale
+        type: choice
+        options: [machine-sale, machine-rental, service, parts, generic]
+      duration:
+        description: Target Reel duration in seconds
+        required: true
+        default: '20'
+        type: string
+      goal:
+        description: Campaign goal
+        required: true
+        default: conversion
+        type: string
+      cta:
+        description: Final Persian call to action
+        required: true
+        default: همین حالا آگهی فروش ماشینت را ثبت کن
+        type: string
+      edit_style:
+        description: Reference-derived edit profile
+        required: true
+        default: high-energy
+        type: choice
+        options: [balanced, cinematic, high-energy]
+permissions:
+  contents: read
+concurrency:
+  group: kbm-topic-reel-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  render-topic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    defaults:
+      run:
+        working-directory: tools/kbm-video-factory
+    env:
+      AVALAI_API_KEY: ${{ secrets.AVALAI_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      KBM_TTS_PROVIDER: avalai
+      KBM_AVALAI_TTS_MODEL: gemini-2.5-pro-tts
+      KBM_AVALAI_VISION_MODEL: gpt-5.6-sol
+      KBM_BRAND_LOGO_URL: https://karyabmashin.ir/wp-content/plugins/kbm-visual-assets/assets/media/kbm-visual-system-v3/ipui25/brand/kbm-logo-transparent.png
+      KBM_EXTERNAL_PUBLISH: '0'
+      KBM_PACKAGE131_REQUIRE_BRAND: '1'
+      KBM_PACKAGE131_AI_INTELLIGENCE: '1'
+      KBM_PACKAGE13_MEDIA_RESEARCH: '1'
+      KBM_PACKAGE13_MATERIALIZE_MEDIA: '1'
+      KBM_CAMP_MEDIA_DIVERSITY: '1'
+      KBM_WHISPERX_MODEL: small
+      KBM_WHISPERX_DEVICE: cpu
+      KBM_WHISPERX_COMPUTE_TYPE: int8
+      KBM_WHISPERX_EXPECTED_VERSION: '3.8.6'
+      KBM_TOPIC: ${{ inputs.topic }}
+      KBM_VERTICAL: ${{ inputs.vertical }}
+      KBM_DURATION: ${{ inputs.duration }}
+      KBM_GOAL: ${{ inputs.goal }}
+      KBM_CTA: ${{ inputs.cta }}
+      KBM_EDIT_STYLE: ${{ inputs.edit_style }}
+      KBM_TOPIC_JOB: topic-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install rendering and ASR dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-core curl unzip
+          npm ci
+          npx playwright install --with-deps chromium
+          python -m pip install --upgrade pip
+          python -m pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch==2.8.0 torchaudio==2.8.0 torchvision==0.23.0
+          python -m pip install --no-cache-dir whisperx==3.8.6
+          python -m pip install --no-cache-dir playwright
+          python -m playwright install chromium
+          python -m pip check
+      - name: Prove no-publish scope
+        run: |
+          test "$KBM_EXTERNAL_PUBLISH" = '0'
+          python - <<'PY'
+          from pathlib import Path
+          paths = [Path('pipeline/topic_reel_runner.py'), Path('pipeline/orchestrator_camp.py'), Path('../../.github/workflows/kbm-topic-reel-no-publish.yml')]
+          source = '\n'.join(path.read_text(encoding='utf-8') for path in paths)
+          forbidden = ('media_' + 'publish', 'telegram_' + 'publish', 'run' + '-once')
+          hits = [item for item in forbidden if item in source]
+          if hits: raise SystemExit('TOPIC_REEL_NO_PUBLISH_SCOPE_VIOLATION:' + ','.join(hits))
+          print('KBM_TOPIC_REEL_NO_PUBLISH_SCOPE=PASS')
+          PY
+      - name: Build one full-stack Reel from the supplied topic
+        id: topic_reel
+        continue-on-error: true
+        run: |
+          python pipeline/topic_reel_runner.py \
+            --topic "$KBM_TOPIC" \
+            --vertical "$KBM_VERTICAL" \
+            --duration "$KBM_DURATION" \
+            --goal "$KBM_GOAL" \
+            --cta "$KBM_CTA" \
+            --job "$KBM_TOPIC_JOB" \
+            --edit-style "$KBM_EDIT_STYLE"
+      - name: Upload no-publish topic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kbm-topic-reel-${{ github.run_id }}-evidence
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            tools/kbm-video-factory/out/topic-${{ github.run_id }}.mp4
+            tools/kbm-video-factory/out/topic-${{ github.run_id }}-licensed-source.mp4
+            tools/kbm-video-factory/work/topic-${{ github.run_id }}/**
+            tools/kbm-video-factory/public/generated/topic-${{ github.run_id }}/**
+      - name: Enforce hard quality outcome
+        if: always()
+        run: |
+          test '${{ steps.topic_reel.outcome }}' = 'success' || { echo 'KBM_TOPIC_REEL_GATE_REJECTED'; exit 73; }

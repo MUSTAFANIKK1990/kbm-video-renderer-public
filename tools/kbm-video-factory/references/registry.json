@@ -1,0 +1,82 @@
+{
+  "version": "0.11.1",
+  "defaultProfile": "kbm-industrial-pro",
+  "profiles": {
+    "kbm-industrial-pro": {
+      "captionProfile": "KBM-CAPTION-BOLD-INDUSTRIAL",
+      "soundProfile": "industrial-pro",
+      "visualResetSeconds": 2.4,
+      "brollDensity": "high",
+      "transitions": [
+        "hard",
+        "push",
+        "cross-zoom",
+        "wipe",
+        "flash"
+      ],
+      "ratios": {
+        "userFootage": 0.45,
+        "broll": 0.3,
+        "motion": 0.15,
+        "infographic": 0.1
+      }
+    },
+    "presenter-ai-inserts-20260827": {
+      "source": "user-reference",
+      "durationSeconds": 82.4,
+      "observedSceneChanges": 14,
+      "captionProfile": "KBM-CAPTION-PRESENTER",
+      "traits": [
+        "presenter",
+        "image-insert",
+        "ui-insert",
+        "blur-background",
+        "explainers"
+      ]
+    },
+    "industrial-bold-caption-20260827": {
+      "source": "user-reference",
+      "durationSeconds": 58.3,
+      "observedSceneChanges": 21,
+      "captionProfile": "KBM-CAPTION-BOLD-INDUSTRIAL",
+      "traits": [
+        "industrial-broll",
+        "large-caption",
+        "yellow-keyword",
+        "high-visual-reset",
+        "fast-cut"
+      ]
+    },
+    "persian-industrial-explainer-20260903": {
+      "source": "user-reference",
+      "sourceFile": "Screen_Recording_20260903_052840_Instagram.mp4",
+      "durationSeconds": 23.045,
+      "observedSourceDimensions": "720x1768",
+      "outputDimensions": "1080x1920",
+      "captionProfile": "KBM-CAPTION-BOLD-INDUSTRIAL",
+      "soundProfile": "persian-studio-commercial",
+      "referenceAudio": {
+        "codec": "aac",
+        "sampleRate": 48000,
+        "channels": 2,
+        "bitRate": 192013,
+        "integratedLufs": -14.67,
+        "truePeakDb": -1.02,
+        "lra": 2.4
+      },
+      "traits": [
+        "persian-voice",
+        "studio-delivery",
+        "non-monotone",
+        "clear-technical-pronunciation",
+        "word-timed-captions",
+        "yellow-keyword",
+        "continuous-narrative",
+        "industrial-visuals",
+        "strong-hook",
+        "direct-cta"
+      ],
+      "hardGate": "KBM-PERSIAN-CINEMATIC-QUALITY-RECOVERY-AUTHORITY-01"
+    }
+  }
+}

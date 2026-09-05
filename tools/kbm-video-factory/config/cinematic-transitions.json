@@ -1,0 +1,16 @@
+{
+  "package": "KBM-VIDEO-FACTORY-CINEMATIC-MULTI-ASSET-EDITOR-10",
+  "version": "0.10.0",
+  "allowed": ["hard", "fade", "push", "wipe", "cross-zoom", "flash"],
+  "policy": {
+    "video->video": "hard",
+    "video->image": "wipe",
+    "image->video": "cross-zoom",
+    "video->motion-slide": "push",
+    "motion-slide->video": "cross-zoom",
+    "video->split-screen": "push",
+    "split-screen->video": "cross-zoom",
+    "video->end-card": "cross-zoom"
+  },
+  "fallback": "hard"
+}

@@ -1,0 +1,27 @@
+{
+  "package": "KBM-VIDEO-FACTORY-CINEMATIC-MULTI-ASSET-EDITOR-10",
+  "version": "0.10.0",
+  "assets": [
+    {
+      "id": "66377-services-slide",
+      "kind": "image",
+      "filename": "66377-slide-services.png",
+      "required": false,
+      "fallback": "static-card"
+    },
+    {
+      "id": "66377-demand-supply",
+      "kind": "image",
+      "filename": "66377-split-demand-supply.png",
+      "required": false,
+      "fallback": "static-card"
+    },
+    {
+      "id": "66377-end-card",
+      "kind": "image",
+      "filename": "66377-end-card.png",
+      "required": false,
+      "fallback": "static-card"
+    }
+  ]
+}

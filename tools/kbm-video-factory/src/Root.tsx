@@ -1,0 +1,15 @@
+import React from 'react';
+import {Composition} from 'remotion';
+import {CinematicAdMasterReel} from './CinematicAdMasterReel';
+import {CinematicAdMasterReelV2} from './CinematicAdMasterReelV2';
+import {CinematicAdMasterReelV3} from './CinematicAdMasterReelV3';
+import {CinematicAdMasterReelV4} from './CinematicAdMasterReelV4';
+import {CinematicPolishedReel} from './CinematicPolishedReel';
+import {CinematicWebsiteReel} from './CinematicWebsiteReel';
+import {CriticPolishReel} from './CriticPolishReel';
+import {KbmReel} from './KbmReel';
+import {ProEditDeskReel} from './ProEditDeskReel';
+import {defaultProps,type KbmVideoProps} from './types';
+const templates=['KBM-V01-INFOGRAPHIC','KBM-V02-PRESENTER-UI','KBM-V03-MACHINE-REVIEW','KBM-V04-MOTION-POSTER','KBM-V05-TECHNICAL-VFX','KBM-V06-STORY-REVEAL'] as const;
+const KbmRenderer:React.FC<KbmVideoProps>=(props)=>{if(props.camp?.enabled)return <CinematicAdMasterReelV4 {...props}/>;if(props.criticPolish?.mode==='website-20s')return <CinematicWebsiteReel {...props}/>;if(props.criticPolish?.enabled)return <CriticPolishReel {...props}/>;if(props.proEditDesk?.enabled)return <ProEditDeskReel {...props}/>;if(props.scenes?.length)return <CinematicPolishedReel {...props}/>;return <KbmReel {...props}/>;};
+export const RemotionRoot:React.FC=()=> <>{templates.map((templateId)=><Composition key={templateId} id={templateId} component={KbmRenderer} durationInFrames={1800} fps={30} width={1080} height={1920} defaultProps={{...defaultProps,templateId}}/>)}</>;

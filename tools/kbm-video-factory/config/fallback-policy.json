@@ -1,0 +1,17 @@
+{
+  "package": "KBM-VIDEO-FACTORY-SMART-NONBLOCKING-EDITOR-09",
+  "version": "0.9.0",
+  "hardBlockers": ["input-video-stream", "input-decode", "input-duration", "output-write", "render-all"],
+  "softFallbacks": {
+    "rough-cut": "normalized-video",
+    "visual-smart-cut": "previous-video",
+    "creative-director": "package09-safe-default",
+    "voiceover": "piper-or-script-only",
+    "creative-audio": "no-generated-music-or-sfx",
+    "shot-composer": "previous-video",
+    "caption-aligner": "whisperx-or-empty",
+    "whisperx": "no-captions",
+    "audio-mix": "unmixed-video",
+    "remotion-render": "ffmpeg-renderer"
+  }
+}

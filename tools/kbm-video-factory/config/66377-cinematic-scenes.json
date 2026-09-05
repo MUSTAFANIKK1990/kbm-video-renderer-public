@@ -1,0 +1,120 @@
+{
+  "package": "KBM-VIDEO-FACTORY-CINEMATIC-MULTI-ASSET-EDITOR-10",
+  "version": "0.10.1",
+  "templateId": "KBM-V03-MACHINE-REVIEW",
+  "title": "کاریاب ماشین",
+  "cta": "ثبت آگهی",
+  "accent": "#F4B400",
+  "background": "#0B1F33",
+  "target": {
+    "durationSeconds": 18.84,
+    "fps": 30,
+    "width": 1080,
+    "height": 1920
+  },
+  "scenes": [
+    {
+      "id": "video-hook",
+      "fromSeconds": 0.0,
+      "toSeconds": 2.2,
+      "kind": "video",
+      "transitionIn": "hard",
+      "motion": "punch"
+    },
+    {
+      "id": "freeze-stop",
+      "fromSeconds": 2.2,
+      "toSeconds": 3.6,
+      "kind": "freeze",
+      "title": "توقف معنی نداره",
+      "kicker": "وقتی پروژه داغه",
+      "transitionIn": "flash",
+      "motion": "slow-push",
+      "suppressCaption": true
+    },
+    {
+      "id": "video-rental",
+      "fromSeconds": 3.6,
+      "toSeconds": 5.7,
+      "kind": "video",
+      "transitionIn": "hard",
+      "motion": "none"
+    },
+    {
+      "id": "services-slide",
+      "fromSeconds": 5.7,
+      "toSeconds": 7.4,
+      "kind": "motion-slide",
+      "assetId": "66377-services-slide",
+      "title": "سه مسیر اصلی",
+      "items": [
+        {"label": "اجاره"},
+        {"label": "خرید و فروش"},
+        {"label": "خدمات"}
+      ],
+      "transitionIn": "push",
+      "transitionOut": "cross-zoom",
+      "motion": "slow-push",
+      "suppressCaption": true
+    },
+    {
+      "id": "video-brand",
+      "fromSeconds": 7.4,
+      "toSeconds": 9.8,
+      "kind": "video",
+      "transitionIn": "cross-zoom",
+      "motion": "slow-push"
+    },
+    {
+      "id": "info-connect",
+      "fromSeconds": 9.8,
+      "toSeconds": 11.6,
+      "kind": "infographic",
+      "kicker": "اتصال هوشمند",
+      "title": "سریع‌تر به انتخاب مناسب",
+      "items": [
+        {"label": "نیاز پروژه"},
+        {"label": "ماشین مناسب"},
+        {"label": "فرصت کار"}
+      ],
+      "transitionIn": "push",
+      "transitionOut": "cross-zoom",
+      "motion": "none",
+      "suppressCaption": true
+    },
+    {
+      "id": "video-machine",
+      "fromSeconds": 11.6,
+      "toSeconds": 14.1,
+      "kind": "video",
+      "transitionIn": "hard",
+      "motion": "punch"
+    },
+    {
+      "id": "demand-supply",
+      "fromSeconds": 14.1,
+      "toSeconds": 16.1,
+      "kind": "split-screen",
+      "assetId": "66377-demand-supply",
+      "title": "ماشین می‌خوای؟",
+      "accentText": "ماشینت دنبال کاره؟",
+      "transitionIn": "push",
+      "transitionOut": "cross-zoom",
+      "motion": "slow-push",
+      "suppressCaption": true
+    },
+    {
+      "id": "end-card",
+      "fromSeconds": 16.1,
+      "toSeconds": 18.84,
+      "kind": "end-card",
+      "assetId": "66377-end-card",
+      "title": "کاریاب ماشین",
+      "accentText": "برای ماشین، کار بتراش",
+      "kicker": "karyabmashin.ir",
+      "transitionIn": "cross-zoom",
+      "motion": "slow-push",
+      "suppressCaption": true
+    }
+  ]
+}

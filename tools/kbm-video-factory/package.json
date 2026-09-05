@@ -1,0 +1,44 @@
+{
+  "name": "@kbm/video-factory",
+  "version": "0.13.1",
+  "kbmPackage": "13.1.1",
+  "private": true,
+  "description": "Karyab Mashin AvalAI-assisted cinematic creative intelligence engine with live audio evidence, hardened directed TTS, multi-provider media diagnostics, official brand gating and bounded auto re-edit",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "node scripts/render.mjs",
+    "from-footage": "python pipeline/real_footage.py",
+    "rough-cut": "python pipeline/rough_cut.py",
+    "visual-smart-cut": "python pipeline/visual_quality.py",
+    "creative-plan": "python pipeline/creative_plan.py",
+    "creative-audio": "python pipeline/creative_audio.py",
+    "voiceover": "python pipeline/voiceover_adapter.py",
+    "audio-lanes": "python pipeline/audio_lanes.py",
+    "audio-master": "python pipeline/audio_mastering.py",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p cloud/tsconfig.json",
+    "cloud:typegen": "wrangler types cloud/worker-configuration.d.ts",
+    "cloud:check": "wrangler deploy --dry-run && tsc --noEmit -p cloud/tsconfig.json",
+    "cloud:deploy": "wrangler deploy --keep-vars",
+    "smart-editor": "python pipeline/orchestrator_v2.py",
+    "pro-editor": "python pipeline/orchestrator_v3.py",
+    "full-cinematic-editor": "python pipeline/orchestrator_v4.py",
+    "avalai-cinematic-editor": "python pipeline/orchestrator_v41.py",
+    "cinematic-plan": "python pipeline/cinematic_scene_builder.py"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/media-utils": "^4.0.0",
+    "@remotion/player": "^4.0.0",
+    "remotion": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260827.1",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.6.0",
+    "wrangler": "^4.0.0"
+  }
+}

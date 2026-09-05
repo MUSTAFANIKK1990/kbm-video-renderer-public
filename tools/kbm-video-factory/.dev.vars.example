@@ -1,0 +1,29 @@
+KBM_STUDIO_TOKEN=replace-in-cloudflare-secret
+KBM_GITHUB_TOKEN=replace-in-cloudflare-secret
+KBM_GITHUB_OWNER=mustafanikk1990-del
+KBM_GITHUB_REPO=karyabmashin-wp-stack
+KBM_GITHUB_REF=replace-with-default-branch
+KBM_GITHUB_WORKFLOW=kbm-video-render-free.yml
+
+# Package 13.1 / 13.1.1 — GitHub Actions secret only. Never commit the real value.
+AVALAI_API_KEY=replace-in-github-actions-secret
+
+# Package 13.1 / 13.1.1 — optional repository/runtime variables.
+KBM_PACKAGE131_MODE=maximum
+KBM_PACKAGE131_CRITIC_THRESHOLD=8.0
+KBM_PACKAGE131_REQUIRE_BRAND=1
+KBM_AVALAI_VISION_MODEL=gpt-5.5
+KBM_AVALAI_IMAGE_MODEL=gpt-image-2
+KBM_AVALAI_VIDEO_MODEL=veo-3.1-fast-generate-001
+KBM_AVALAI_TTS_MODEL=gpt-4o-mini-tts
+KBM_AVALAI_BROLL_SECONDS=4
+
+# Package 13 existing optional media/brand authorities.
+PEXELS_API_KEY=replace-in-github-actions-secret
+PIXABAY_API_KEY=replace-in-github-actions-secret
+KBM_IRAN_MEDIA_SEARCH_URL=
+KBM_IRAN_MEDIA_SEARCH_TOKEN=replace-in-github-actions-secret
+KBM_BRAND_LOGO_URL=
+KBM_BRAND_LOGO_LOCAL=
+KBM_MEDIA_DOWNLOAD_HOSTS=
+KBM_BRAND_ASSET_HOSTS=

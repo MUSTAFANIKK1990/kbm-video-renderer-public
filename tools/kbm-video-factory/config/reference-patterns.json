@@ -1,0 +1,48 @@
+{
+  "package": "KBM-VIDEO-FACTORY-REFERENCE-PATTERN-AUTOMATION-01",
+  "templates": [
+    {
+      "id": "KBM-V01-INFOGRAPHIC",
+      "label": "Animated Infographic",
+      "useCase": "Technical facts, comparisons, educational machine content",
+      "motion": ["fade", "scale", "card-reveal"],
+      "manualEffort": "low"
+    },
+    {
+      "id": "KBM-V02-PRESENTER-UI",
+      "label": "Presenter + UI",
+      "useCase": "Talking head, product walkthrough, site/app explanation",
+      "motion": ["punch-in", "caption-pop", "ui-overlay"],
+      "manualEffort": "low-medium"
+    },
+    {
+      "id": "KBM-V03-MACHINE-REVIEW",
+      "label": "Field Machine Review",
+      "useCase": "Real machinery footage, site visits, equipment reviews",
+      "motion": ["fast-cut", "speed-ramp", "title-hit"],
+      "manualEffort": "medium"
+    },
+    {
+      "id": "KBM-V04-MOTION-POSTER",
+      "label": "Motion Poster",
+      "useCase": "Tender, auction, campaign, announcement",
+      "motion": ["layer-reveal", "mask-reveal", "parallax"],
+      "manualEffort": "low-medium"
+    },
+    {
+      "id": "KBM-V05-TECHNICAL-VFX",
+      "label": "Technical VFX",
+      "useCase": "Tracked callouts, machine feature highlights, neon/object emphasis",
+      "motion": ["outline", "tracked-label", "glitch-hit"],
+      "manualEffort": "medium-high",
+      "optionalAdapters": ["sam2"]
+    },
+    {
+      "id": "KBM-V06-STORY-REVEAL",
+      "label": "Story / Hook / Reveal",
+      "useCase": "Storytelling, industrial humor, before/after, hook-driven reels",
+      "motion": ["match-cut", "flash", "reveal"],
+      "manualEffort": "medium"
+    }
+  ]
+}

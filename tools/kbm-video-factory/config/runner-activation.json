@@ -1,0 +1,28 @@
+{
+  "package": "KBM-VIDEO-FACTORY-RUNNER-ACTIVATION-E2E-12",
+  "version": "0.12.0",
+  "pipelineModeEnv": "KBM_PIPELINE_MODE",
+  "defaultMode": "v2",
+  "allowedModes": ["v2", "v3"],
+  "activationRequiresSeparateApproval": true,
+  "v3": {
+    "networkBrollDefault": false,
+    "materializeBrollDefault": false,
+    "renderer": "remotion",
+    "fallback": "ffmpeg"
+  },
+  "finalQc": {
+    "videoCodec": "h264",
+    "pixelFormats": ["yuv420p", "yuvj420p"],
+    "width": 1080,
+    "height": 1920,
+    "fpsMin": 29.5,
+    "fpsMax": 30.5,
+    "audioCodec": "aac",
+    "durationToleranceSeconds": 0.25
+  },
+  "rollback": {
+    "mode": "v2",
+    "requiresCodeRevert": false
+  }
+}

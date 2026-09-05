@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "workdir": "./work",
+  "stages": [
+    {
+      "id": "normalize",
+      "enabled": true,
+      "required": true,
+      "command": ["ffmpeg", "-y", "-i", "{input}", "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920", "-r", "30", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-c:a", "aac", "-b:a", "192k", "{workdir}/normalized.mp4"]
+    },
+    {
+      "id": "roughcut",
+      "enabled": false,
+      "required": false,
+      "command": ["auto-editor", "{workdir}/normalized.mp4", "--output", "{workdir}/roughcut.mp4"]
+    },
+    {
+      "id": "transcribe",
+      "enabled": false,
+      "required": false,
+      "command": ["whisperx", "{workdir}/normalized.mp4", "--language", "fa", "--output_dir", "{workdir}/transcript"]
+    },
+    {
+      "id": "sam2",
+      "enabled": false,
+      "required": false,
+      "adapter": "external",
+      "notes": "Optional object segmentation/tracking adapter for KBM-V05."
+    },
+    {
+      "id": "comfyui",
+      "enabled": false,
+      "required": false,
+      "adapter": "external",
+      "notes": "Optional ComfyUI workflow for AI B-roll or image-to-video."
+    },
+    {
+      "id": "rife",
+      "enabled": false,
+      "required": false,
+      "adapter": "external",
+      "notes": "Optional frame interpolation for slow motion or generated footage."
+    }
+  ]
+}

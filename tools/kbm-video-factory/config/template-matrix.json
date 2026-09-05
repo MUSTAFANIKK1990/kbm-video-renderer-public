@@ -1,0 +1,7 @@
+{
+  "real-machine": ["KBM-V03-MACHINE-REVIEW", "KBM-V05-TECHNICAL-VFX"],
+  "host-education": ["KBM-V02-PRESENTER-UI", "KBM-V01-INFOGRAPHIC"],
+  "platform-feature": ["KBM-V02-PRESENTER-UI", "KBM-V01-INFOGRAPHIC"],
+  "motion-poster": ["KBM-V04-MOTION-POSTER"],
+  "myth-engage": ["KBM-V06-STORY-REVEAL", "KBM-V01-INFOGRAPHIC"]
+}

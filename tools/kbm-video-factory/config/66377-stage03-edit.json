@@ -1,0 +1,99 @@
+{
+  "package": "KBM-VIDEO-FACTORY-66377-STAGE03-VISUAL-EDIT-SYNC-01",
+  "version": "0.1.0",
+  "job": "66377-stage03",
+  "target": {
+    "durationSeconds": 18.84,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "sourceAudioVolume": 0.16,
+    "voiceVolume": 1.0
+  },
+  "shots": [
+    {
+      "id": "hook",
+      "purpose": "hook",
+      "effect": "punch-zoom",
+      "segments": [
+        {"from": 0.0, "to": 2.2, "speed": 1.0}
+      ]
+    },
+    {
+      "id": "stop",
+      "purpose": "jump-cut",
+      "effect": "clean",
+      "segments": [
+        {"from": 8.9, "to": 10.6, "speed": 1.0}
+      ]
+    },
+    {
+      "id": "rent",
+      "purpose": "speed-ramp",
+      "effect": "push",
+      "segments": [
+        {"from": 10.6, "to": 11.7, "speed": 1.0},
+        {"from": 11.7, "to": 13.2, "speed": 1.363636}
+      ]
+    },
+    {
+      "id": "sale",
+      "purpose": "jump-cut",
+      "effect": "clean",
+      "segments": [
+        {"from": 15.0, "to": 17.0, "speed": 1.0}
+      ]
+    },
+    {
+      "id": "services",
+      "purpose": "jump-cut",
+      "effect": "slow-push",
+      "segments": [
+        {"from": 18.3, "to": 20.4, "speed": 1.0}
+      ]
+    },
+    {
+      "id": "brand",
+      "purpose": "brand",
+      "effect": "punch-zoom",
+      "segments": [
+        {"from": 20.8, "to": 23.4, "speed": 1.0}
+      ]
+    },
+    {
+      "id": "connect",
+      "purpose": "speed-ramp",
+      "effect": "push",
+      "segments": [
+        {"from": 23.6, "to": 24.5, "speed": 1.0},
+        {"from": 24.5, "to": 25.85, "speed": 1.5}
+      ]
+    },
+    {
+      "id": "want-machine",
+      "purpose": "freeze-accent",
+      "effect": "clean",
+      "freezeTailSeconds": 0.25,
+      "segments": [
+        {"from": 25.85, "to": 27.2, "speed": 1.0}
+      ]
+    },
+    {
+      "id": "machine-work",
+      "purpose": "jump-cut",
+      "effect": "punch-zoom",
+      "segments": [
+        {"from": 27.3, "to": 28.7, "speed": 1.0}
+      ]
+    },
+    {
+      "id": "cta",
+      "purpose": "cta-freeze",
+      "effect": "slow-push",
+      "freezeTailSeconds": 0.45,
+      "segments": [
+        {"from": 26.5, "to": 27.29, "speed": 1.0}
+      ]
+    }
+  ]
+}

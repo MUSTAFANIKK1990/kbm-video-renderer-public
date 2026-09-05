@@ -1,0 +1,11 @@
+{
+  "package": "KBM-VIDEO-FACTORY-PRO-EDIT-DESK-REFERENCE-DIRECTOR-11",
+  "version": "0.11.0",
+  "enabled": true,
+  "defaultReferenceProfile": "kbm-industrial-pro",
+  "visualReset": {"targetSeconds": 2.4, "minSeconds": 1.4, "maxSeconds": 3.0},
+  "assetPolicy": {"userFootageFirst": true, "maxExternalAssets": 6, "networkAssetsDefault": false, "rightsManifestRequired": true},
+  "renderPolicy": {"preferred": "remotion", "fallback": "ffmpeg", "optionalStagesSoftFail": true},
+  "editorial": {"minimumScore": 85, "maxPasses": 2},
+  "branding": {"masterLogoAssetId": "kbm-brand-logo", "neverInventLogo": true}
+}

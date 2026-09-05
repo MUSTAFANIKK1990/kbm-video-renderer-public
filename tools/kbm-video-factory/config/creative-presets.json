@@ -1,0 +1,67 @@
+{
+  "excavator-rental-3-checks": {
+    "subject": "excavator",
+    "language": "fa-IR",
+    "referenceDurationSeconds": 17.0,
+    "title": "۳ نکته مهم قبل از اجاره بیل مکانیکی",
+    "subtitle": "بررسی سریع قبل از شروع پروژه",
+    "cta": "ماشین‌آلات پروژه را در کاریاب ماشین پیدا کنید",
+    "voiceoverScript": "قبل از اجاره بیل مکانیکی، این سه نکته را حتما بررسی کن. اول، سلامت ظاهری بدنه و کابین دستگاه. دوم، عملکرد صحیح بازو و بخش‌های عملیاتی. سوم، آماده به کار بودن ماشین برای پروژه. برای مشاهده آگهی‌های ماشین‌آلات، به کاریاب ماشین مراجعه کن.",
+    "musicProfile": "industrial-corporate-105",
+    "overlays": [
+      {
+        "fromSeconds": 0.0,
+        "toSeconds": 2.4,
+        "kind": "hook",
+        "eyebrow": "اجاره ماشین‌آلات",
+        "text": "قبل از اجاره بیل مکانیکی",
+        "accentText": "این ۳ نکته را چک کن",
+        "position": "top"
+      },
+      {
+        "fromSeconds": 2.4,
+        "toSeconds": 6.4,
+        "kind": "point",
+        "eyebrow": "نکته ۱",
+        "text": "سلامت ظاهری و وضعیت بدنه",
+        "accentText": "بدنه، کابین و اتصالات را بررسی کن",
+        "position": "bottom"
+      },
+      {
+        "fromSeconds": 6.4,
+        "toSeconds": 10.5,
+        "kind": "point",
+        "eyebrow": "نکته ۲",
+        "text": "وضعیت بازو و بخش‌های عملیاتی",
+        "accentText": "حرکت نرم و سلامت اجزای کاری مهم است",
+        "position": "bottom"
+      },
+      {
+        "fromSeconds": 10.5,
+        "toSeconds": 14.2,
+        "kind": "point",
+        "eyebrow": "نکته ۳",
+        "text": "آماده به کار بودن دستگاه",
+        "accentText": "ماشین باید برای پروژه قابل اتکا باشد",
+        "position": "bottom"
+      },
+      {
+        "fromSeconds": 14.2,
+        "toSeconds": 17.0,
+        "kind": "cta",
+        "eyebrow": "کاریاب ماشین",
+        "text": "ماشین‌آلات مورد نیاز پروژه را پیدا کن",
+        "accentText": "اجاره | خرید و فروش | خدمات ماشین‌آلات",
+        "position": "center"
+      }
+    ],
+    "sfxCues": [
+      {"atSeconds": 0.2, "type": "hit", "volume": 0.72},
+      {"atSeconds": 2.35, "type": "whoosh", "volume": 0.52},
+      {"atSeconds": 6.35, "type": "whoosh", "volume": 0.48},
+      {"atSeconds": 10.45, "type": "tick", "volume": 0.48},
+      {"atSeconds": 14.1, "type": "rise", "volume": 0.52},
+      {"atSeconds": 16.5, "type": "hit", "volume": 0.62}
+    ]
+  }
+}

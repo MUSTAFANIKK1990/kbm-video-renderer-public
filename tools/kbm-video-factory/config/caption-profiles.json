@@ -1,0 +1,5 @@
+{
+  "KBM-CAPTION-BOLD-INDUSTRIAL": {"fontSize": 78, "hookFontSize": 106, "minFontSize": 64, "maxFontSize": 88, "maxWords": 5, "maxLines": 2, "bottom": 250, "outlinePx": 6, "activeScale": 1.12, "pill": false, "accent": "#F4B400"},
+  "KBM-CAPTION-CINEMATIC": {"fontSize": 72, "hookFontSize": 98, "minFontSize": 64, "maxFontSize": 84, "maxWords": 6, "maxLines": 2, "bottom": 260, "outlinePx": 5, "activeScale": 1.10, "pill": true, "accent": "#F4B400"},
+  "KBM-CAPTION-PRESENTER": {"fontSize": 68, "hookFontSize": 92, "minFontSize": 64, "maxFontSize": 80, "maxWords": 6, "maxLines": 2, "bottom": 235, "outlinePx": 5, "activeScale": 1.08, "pill": true, "accent": "#F4B400"}
+}

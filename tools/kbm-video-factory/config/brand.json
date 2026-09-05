@@ -1,0 +1,26 @@
+{
+  "brand": "Karyab Mashin",
+  "locale": "fa-IR",
+  "direction": "rtl",
+  "fontFamily": "Estedad, Arial, sans-serif",
+  "colors": {
+    "navy": "#0B1F33",
+    "navySoft": "#17324D",
+    "yellow": "#F4B400",
+    "white": "#FFFFFF",
+    "muted": "#D8E1EA",
+    "danger": "#D94C4C"
+  },
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "safeTop": 160,
+    "safeBottom": 260,
+    "safeHorizontal": 72
+  },
+  "copy": {
+    "brandLabel": "کاریاب ماشین",
+    "defaultCta": "مشاهده در کاریاب ماشین"
+  }
+}

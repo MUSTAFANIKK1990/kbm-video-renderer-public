@@ -1,0 +1,106 @@
+{
+  "authority": "KBM-PERSIAN-CINEMATIC-QUALITY-RECOVERY-AUTHORITY-01",
+  "version": "1.0.0-rc.2",
+  "profileId": "persian-industrial-explainer-20260903",
+  "referenceContract": {
+    "source": "user-supplied Instagram screen recording",
+    "sourceFile": "Screen_Recording_20260903_052840_Instagram.mp4",
+    "durationSeconds": 23.045,
+    "observedSourceDimensions": "720x1768",
+    "note": "Source dimensions are not an output target; voice, mix, caption rhythm and editorial execution are the reference."
+  },
+  "output": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "videoCodec": "h264",
+    "pixelFormat": "yuv420p",
+    "colorSpace": "bt709",
+    "fastStart": true
+  },
+  "gates": {
+    "audio": {
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 2,
+      "bitRateMin": 128000,
+      "lufsMin": -16,
+      "lufsMax": -13,
+      "referenceMeasuredLufs": -14.67,
+      "truePeakMaxDb": -1,
+      "referenceMeasuredTruePeakDb": -1.02,
+      "referenceMeasuredLra": 2.4
+    },
+    "voice": {
+      "language": "fa-IR",
+      "scriptTranscriptSimilarityMin": 0.84,
+      "persianCharacterRatioMin": 0.7,
+      "finalMixAsrRequired": true,
+      "pronunciationReviewRequired": true,
+      "delivery": [
+        "professional",
+        "energetic",
+        "clear-technical-terms",
+        "non-monotone",
+        "controlled-pauses",
+        "strong-hook",
+        "strong-cta"
+      ]
+    },
+    "captions": {
+      "coverageRatioMin": 0.88,
+      "transcriptAgreementMin": 0.88,
+      "wordTimingRequired": true,
+      "asrBackedRequired": true,
+      "maxWordsPerCue": 5,
+      "maxCharsPerCue": 42,
+      "keywordHighlightColor": "#F4B400",
+      "rtlRequired": true
+    },
+    "visual": {
+      "semanticBeatCountMin": 7,
+      "maxUnchangedSeconds": 2.5,
+      "realIndustrialFootageRequired": true,
+      "thirdPartyWatermarkForbidden": true
+    },
+    "brand": {
+      "logoRequired": true,
+      "ctaRequired": true,
+      "siteRequired": true,
+      "endCardRequired": true
+    }
+  },
+  "referenceEditingProfile": {
+    "profileId": "kbm-reference-reel-v1",
+    "authority": "KBM-REFERENCE-REEL-EDITING-GRAMMAR-01",
+    "sourcePolicy": "Derived from five user-supplied reference reels as editing grammar only; do not reuse media, logos, watermarks, narration, or music.",
+    "hookMaxSeconds": 1.5,
+    "visualResetTargetSeconds": 1.55,
+    "maxUnchangedSeconds": 2,
+    "endCardMinSeconds": 2.5,
+    "caption": {
+      "maxWords": 5,
+      "maxLines": 2,
+      "entrance": "kinetic",
+      "placement": "safe-lower-third"
+    },
+    "motifs": [
+      "hook-impact",
+      "hero-detail",
+      "ui-proof",
+      "numbered-benefit",
+      "animated-end-card"
+    ],
+    "soundCues": [
+      "impact",
+      "whoosh",
+      "click",
+      "rise"
+    ],
+    "proofBadges": [
+      "مشاهده دقیق",
+      "مقایسه واقعی",
+      "اقدام سریع"
+    ]
+  }
+}
