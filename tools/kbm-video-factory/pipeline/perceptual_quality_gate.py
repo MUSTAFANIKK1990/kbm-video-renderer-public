@@ -156,6 +156,8 @@ def build_evidence(
     audio_stream = _probe_audio(video)
     audio = analyze_audio(video)
     duration = _number(audio.get("durationSeconds"))
+    narration_duration = _number(voice.get("selectedDuration"))
+    caption_duration = min(duration, narration_duration + 0.5) if narration_duration > 0 else duration
     word_timing = bool(captions) and all(
         isinstance(item, dict) and isinstance(item.get("words"), list) and bool(item.get("words"))
         for item in captions
@@ -205,7 +207,7 @@ def build_evidence(
                 and caption_authority.get("source") == "whisperx-rendered-voice"
                 and caption_authority.get("syntheticAlignment") is False
             ),
-            "coverageRatio": _caption_coverage(captions, duration),
+            "coverageRatio": _caption_coverage(captions, caption_duration),
             "transcriptAgreement": _similarity(actual, caption_text),
             "keywordHighlightColor": str((props.get("captionProfile") or {}).get("keywordHighlightColor") or ""),
             "maxWordsPerCue": max((len(str(item.get("text") or "").split()) for item in captions if isinstance(item, dict)), default=0),
