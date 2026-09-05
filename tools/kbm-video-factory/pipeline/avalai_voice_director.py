@@ -259,7 +259,7 @@ def direct_voice(
     selection_target = max(4.0, min(target, max_seconds * 0.75))
     fitted_text, fit_report = _fit_script(text, target)
     ceiling = max(3.0, min(max_seconds - 0.45, target * 1.12))
-    floor = max(2.5, target * 0.52)
+    floor = max(2.5, min(target * 0.52, len(_words(fitted_text)) / 2.2))
 
     for index, (name, instructions) in enumerate(take_specs, start=1):
         attempted_takes += 1
