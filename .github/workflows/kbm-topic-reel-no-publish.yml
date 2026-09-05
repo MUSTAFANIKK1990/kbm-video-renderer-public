@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - tools/kbm-video-factory/scripts/prepare_persian_quality_source.py
+      - tools/kbm-video-factory/pipeline/tts_client.py
       - .github/workflows/kbm-topic-reel-no-publish.yml
   workflow_dispatch:
     inputs:
@@ -58,6 +59,7 @@ jobs:
       KBM_TTS_PROVIDER: avalai
       KBM_AVALAI_TTS_MODEL: gemini-2.5-pro-tts
       KBM_AVALAI_VISION_MODEL: gpt-5.6-sol
+      KBM_LOCAL_TTS_FALLBACK: '1'
       KBM_BRAND_LOGO_URL: https://karyabmashin.ir/wp-content/plugins/kbm-visual-assets/assets/media/kbm-visual-system-v3/ipui25/brand/kbm-logo-transparent.png
       KBM_EXTERNAL_PUBLISH: '0'
       KBM_PACKAGE131_REQUIRE_BRAND: '1'
@@ -85,7 +87,7 @@ jobs:
       - name: Install rendering and ASR dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-noto-core curl unzip
+          sudo apt-get install -y ffmpeg espeak-ng fonts-noto-core curl unzip
           npm ci
           npx playwright install --with-deps chromium
           python -m pip install --upgrade pip
