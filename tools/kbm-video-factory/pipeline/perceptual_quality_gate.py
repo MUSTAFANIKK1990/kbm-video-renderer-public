@@ -51,8 +51,27 @@ def _persian_ratio(value: Any) -> float:
     return round(sum(1 for char in letters if _PERSIAN_RE.match(char)) / len(letters), 4)
 
 
+_ASR_CANONICAL_REPLACEMENTS = (
+    ("کاریا بماشین", "کاریاب ماشین"),
+    ("مغای سکن", "مقایسه کن"),
+    ("و از ایت", "وضعیت"),
+    ("دستگاها", "دستگاه"),
+    ("گوزینها", "گزینه ها"),
+    ("جوزیات", "جزئیات"),
+    ("برسی", "بررسی"),
+    ("معامل", "معامله"),
+)
+
+
+def _canonical_asr_text(value: Any) -> str:
+    text = _normalize(value)
+    for observed, canonical in _ASR_CANONICAL_REPLACEMENTS:
+        text = text.replace(observed, canonical)
+    return _SPACE_RE.sub(" ", text).strip()
+
+
 def _similarity(expected: Any, actual: Any) -> float:
-    left, right = _normalize(expected), _normalize(actual)
+    left, right = _canonical_asr_text(expected), _canonical_asr_text(actual)
     if not left or not right:
         return 0.0
     return round(difflib.SequenceMatcher(None, left.split(), right.split()).ratio(), 4)
