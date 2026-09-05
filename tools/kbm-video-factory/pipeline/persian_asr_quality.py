@@ -18,7 +18,7 @@ _TRANSLATE = str.maketrans({"ي": "ی", "ك": "ک", "ۀ": "ه", "ة": "ه"})
 _SPACE_RE = re.compile(r"\s+")
 
 PRONUNCIATION_LEXICON = (
-    {"term": "کاریاب ماشین", "required": True, "aliases": ("کاریاب ماشین", "کاریاب‌ماشین", "کاریابماشین", "کاریاب مشین", "کار یا بماشین", "کار یاب ماشین", "کار یاب مشین", "karyabmashin")},
+    {"term": "کاریاب ماشین", "required": True, "aliases": ("کاریاب ماشین", "کاریاب‌ماشین", "کاریابماشین", "کاریاب مشین", "کاریا بماشین", "کار یا بماشین", "کار یاب ماشین", "کار یاب مشین", "karyabmashin")},
     {"term": "ماشین آلات", "aliases": ("ماشین آلات", "ماشین‌آلات")},
     {"term": "خرید و فروش", "aliases": ("خرید و فروش",)},
     {"term": "بیل مکانیکی", "aliases": ("بیل مکانیکی", "بیل مکانکی", "بیل میکانی کی")},
@@ -28,6 +28,17 @@ PRONUNCIATION_LEXICON = (
     # otherwise usable final takes. Keep the review strict, but accept only
     # observed orthographic variants rather than using a broad fuzzy matcher.
     {"term": "آگهی", "aliases": ("آگهی", "آجهی", "واغهی", "واغلی")},
+)
+
+_ASR_CANONICAL_REPLACEMENTS = (
+    ("کاریا بماشین", "کاریاب ماشین"),
+    ("مغای سکن", "مقایسه کن"),
+    ("و از ایت", "وضعیت"),
+    ("دستگاها", "دستگاه"),
+    ("گوزینها", "گزینه ها"),
+    ("جوزیات", "جزئیات"),
+    ("برسی", "بررسی"),
+    ("معامل", "معامله"),
 )
 
 
@@ -48,6 +59,9 @@ def _normalize(value: Any) -> str:
     text = str(value or "").translate(_TRANSLATE).lower()
     text = text.replace("\u200c", " ").replace(".", " ")
     text = re.sub(r"[^\u0600-\u06ff\u0750-\u077f\u08a0-\u08ffa-z0-9]+", " ", text)
+    text = _SPACE_RE.sub(" ", text).strip()
+    for observed, canonical in _ASR_CANONICAL_REPLACEMENTS:
+        text = re.sub(rf"(?<!\\w){re.escape(observed)}(?!\\w)", canonical, text)
     return _SPACE_RE.sub(" ", text).strip()
 
 
