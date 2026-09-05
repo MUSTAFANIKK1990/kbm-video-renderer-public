@@ -102,6 +102,36 @@ def download(url: str, destination: Path) -> None:
                 handle.write(chunk)
 
 
+
+def create_free_fallback(destination: Path, duration: float) -> dict[str, Any]:
+    """Create a deterministic first-party motion source when stock API keys are absent."""
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    video_filter = (
+        "testsrc2=size=1080x1920:rate=30,"
+        "eq=brightness=-0.52:contrast=1.18:saturation=0.18,"
+        "drawgrid=width=135:height=135:thickness=2:color=0xD9A441@0.13,"
+        "vignette=PI/5,format=yuv420p"
+    )
+    command = [
+        "ffmpeg", "-y", "-f", "lavfi", "-i", video_filter,
+        "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=48000",
+        "-t", f"{duration:.3f}", "-map", "0:v:0", "-map", "1:a:0",
+        "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", "30",
+        "-c:a", "aac", "-ar", "48000", "-ac", "2", "-b:a", "128k",
+        "-movflags", "+faststart", str(destination),
+    ]
+    subprocess.run(command, check=True)
+    return {
+        "provider": "kbm-first-party-generated",
+        "id": "free-no-key-fallback-v1",
+        "sourceUrl": "https://karyabmashin.ir/",
+        "license": "KaryabMashin first-party generated media",
+        "attribution": "KaryabMashin",
+        "width": 1080,
+        "height": 1920,
+        "duration": duration,
+    }
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--query", required=True)
@@ -115,37 +145,40 @@ def main() -> int:
         raise SystemExit("ffmpeg is required to prepare the quality source")
 
     candidates = pexels_candidates(args.query) + pixabay_candidates(args.query)
-    if not candidates:
-        raise SystemExit("No licensed Pexels/Pixabay source was found; check configured provider credentials")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     raw = args.output.with_suffix(".licensed-source.mp4")
-    candidates.sort(key=lambda item: (item["height"] >= item["width"], item["width"] * item["height"], item["duration"]), reverse=True)
     selected: dict[str, Any] | None = None
     rejected: list[str] = []
-    for candidate in candidates:
-        try:
-            download(candidate["downloadUrl"], raw)
-        except RuntimeError as exc:
-            raw.unlink(missing_ok=True)
-            rejected.append(f"{candidate['provider']}:{candidate['id']}:{exc}")
-            continue
-        selected = candidate
-        break
-    if selected is None:
-        raise SystemExit("No licensed source met the download limit: " + "; ".join(rejected))
-    try:
-        command = [
-            "ffmpeg", "-y", "-stream_loop", "-1", "-i", str(raw), "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=48000",
-            "-t", f"{args.duration:.3f}", "-filter:v", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,format=yuv420p",
-            "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", "30",
-            "-c:a", "aac", "-ar", "48000", "-ac", "2", "-b:a", "128k", "-movflags", "+faststart", str(args.output),
-        ]
-        subprocess.run(command, check=True)
-    finally:
-        raw.unlink(missing_ok=True)
+
+    if not candidates:
+        selected = create_free_fallback(args.output, args.duration)
+    else:
+        candidates.sort(key=lambda item: (item["height"] >= item["width"], item["width"] * item["height"], item["duration"]), reverse=True)
+        for candidate in candidates:
+            try:
+                download(candidate["downloadUrl"], raw)
+            except RuntimeError as exc:
+                raw.unlink(missing_ok=True)
+                rejected.append(f"{candidate['provider']}:{candidate['id']}:{exc}")
+                continue
+            selected = candidate
+            break
+        if selected is None:
+            selected = create_free_fallback(args.output, args.duration)
+        else:
+            try:
+                command = [
+                    "ffmpeg", "-y", "-stream_loop", "-1", "-i", str(raw), "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=48000",
+                    "-t", f"{args.duration:.3f}", "-filter:v", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,format=yuv420p",
+                    "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", "30",
+                    "-c:a", "aac", "-ar", "48000", "-ac", "2", "-b:a", "128k", "-movflags", "+faststart", str(args.output),
+                ]
+                subprocess.run(command, check=True)
+            finally:
+                raw.unlink(missing_ok=True)
     report = {
-        "authority": AUTHORITY, "purpose": "licensed-current-real-footage-only; no-publish-e2e-validation",
+        "authority": AUTHORITY, "purpose": "licensed-stock-or-first-party-generated; no-publish-e2e-validation",
         "query": args.query, "requestedDurationSeconds": args.duration,
         "source": {key: selected[key] for key in ("provider", "id", "sourceUrl", "license", "attribution", "width", "height", "duration")},
         "rejectedCandidates": rejected,
