@@ -1,0 +1,23 @@
+name: Public Runner Preflight
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/public-runner-preflight.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify isolated renderer
+        run: |
+          test -f .github/workflows/kbm-topic-reel-no-publish.yml
+          test -f tools/kbm-video-factory/pipeline/topic_reel_runner.py
+          test -f tools/kbm-video-factory/package.json
+          echo KBM_PUBLIC_RUNNER_READY=PASS
