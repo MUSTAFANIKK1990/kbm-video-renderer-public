@@ -565,6 +565,7 @@ def main() -> int:
         },
     }
     props["captionPolicy"] = "single-lane"
+    props.setdefault("captionProfile", {})["keywordHighlightColor"] = "#F4B400"
     props["muted"] = True
     props["volume"] = 0
     if opts.camp_cta.strip():
