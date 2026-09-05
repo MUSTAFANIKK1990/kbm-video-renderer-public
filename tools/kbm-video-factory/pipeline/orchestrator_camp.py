@@ -24,6 +24,26 @@ from render_router import render as render_with_fallback
 from rights_gate import evaluate as evaluate_rights
 
 
+
+def _attach_final_audio(video: Path, mixed_audio_source: Path, duration_seconds: float) -> None:
+    if not mixed_audio_source.is_file():
+        raise RuntimeError(f"Final mixed audio source is missing: {mixed_audio_source}")
+    temporary = video.with_suffix(".final-audio.tmp.mp4")
+    command = [
+        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+        "-i", str(video), "-i", str(mixed_audio_source),
+        "-filter_complex", f"[1:a]apad=pad_dur={duration_seconds:.3f}[finala]",
+        "-map", "0:v:0", "-map", "[finala]",
+        "-t", f"{duration_seconds:.3f}", "-c:v", "copy",
+        "-c:a", "aac", "-ar", "48000", "-ac", "2", "-b:a", "192k",
+        "-movflags", "+faststart", str(temporary),
+    ]
+    completed = subprocess.run(command, check=False, capture_output=True, timeout=240)
+    if completed.returncode != 0 or not temporary.is_file():
+        temporary.unlink(missing_ok=True)
+        raise RuntimeError("CAMP_FINAL_AUDIO_ATTACH_FAILED")
+    temporary.replace(video)
+
 def _read(path: Path, default: Any) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
@@ -557,7 +577,7 @@ def main() -> int:
     editorial["shotRoleContract"] = {
         "hero": 1,
         "closeup": 1,
-        "operation": 2,
+        "operation": 3,
         "website": 1 if opts.camp_website_required else 0,
         "cta": 1,
     }
@@ -601,6 +621,11 @@ def main() -> int:
         _write(work / "camp-renderer.json", renderer)
         if not output_path.is_file():
             return _blocked_report(work, brief, "CAMP_FINAL_OUTPUT_MISSING", outputContract=output_contract)
+
+        try:
+            _attach_final_audio(output_path, work / "audio-mix.mp4", float(brief["durationSeconds"]))
+        except Exception as exc:
+            return _blocked_report(work, brief, "CAMP_FINAL_AUDIO_ATTACH_FAILED", finalAudioError=str(exc)[-400:])
 
         try:
             master = master_for_reels(output_path, target_lufs=-14.0, target_lra=7.0, true_peak=-1.5)
