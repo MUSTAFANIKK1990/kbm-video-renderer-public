@@ -1,6 +1,11 @@
 name: KBM Topic to Reel (No Publish)
-run-name: KBM Topic Reel — ${{ inputs.topic }}
+run-name: KBM Topic Reel — ${{ inputs.topic || 'آزمون خودکار بیل مکانیکی' }}
 on:
+  push:
+    branches: [main]
+    paths:
+      - tools/kbm-video-factory/scripts/prepare_persian_quality_source.py
+      - .github/workflows/kbm-topic-reel-no-publish.yml
   workflow_dispatch:
     inputs:
       topic:
@@ -64,12 +69,12 @@ jobs:
       KBM_WHISPERX_DEVICE: cpu
       KBM_WHISPERX_COMPUTE_TYPE: int8
       KBM_WHISPERX_EXPECTED_VERSION: '3.8.6'
-      KBM_TOPIC: ${{ inputs.topic }}
-      KBM_VERTICAL: ${{ inputs.vertical }}
-      KBM_DURATION: ${{ inputs.duration }}
-      KBM_GOAL: ${{ inputs.goal }}
-      KBM_CTA: ${{ inputs.cta }}
-      KBM_EDIT_STYLE: ${{ inputs.edit_style }}
+      KBM_TOPIC: ${{ inputs.topic || 'معرفی بیل مکانیکی سنگین برای پروژه‌های عمرانی' }}
+      KBM_VERTICAL: ${{ inputs.vertical || 'machine-sale' }}
+      KBM_DURATION: ${{ inputs.duration || '20' }}
+      KBM_GOAL: ${{ inputs.goal || 'conversion' }}
+      KBM_CTA: ${{ inputs.cta || 'همین حالا آگهی فروش ماشینت را ثبت کن' }}
+      KBM_EDIT_STYLE: ${{ inputs.edit_style || 'high-energy' }}
       KBM_TOPIC_JOB: topic-${{ github.run_id }}
     steps:
       - uses: actions/checkout@v4
