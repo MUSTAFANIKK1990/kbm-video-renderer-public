@@ -66,7 +66,7 @@ _ASR_CANONICAL_REPLACEMENTS = (
 def _canonical_asr_text(value: Any) -> str:
     text = _normalize(value)
     for observed, canonical in _ASR_CANONICAL_REPLACEMENTS:
-        text = text.replace(observed, canonical)
+        text = re.sub(rf"(?<!\\w){re.escape(observed)}(?!\\w)", canonical, text)
     return _SPACE_RE.sub(" ", text).strip()
 
 
