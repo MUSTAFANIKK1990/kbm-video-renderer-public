@@ -6,6 +6,9 @@ on:
     paths:
       - tools/kbm-video-factory/scripts/prepare_persian_quality_source.py
       - tools/kbm-video-factory/pipeline/tts_client.py
+      - tools/kbm-video-factory/pipeline/whisperx_adapter.py
+      - tools/kbm-video-factory/pipeline/persian_asr_quality.py
+      - tools/kbm-video-factory/pipeline/orchestrator_camp.py
       - .github/workflows/kbm-topic-reel-no-publish.yml
   workflow_dispatch:
     inputs:
@@ -70,6 +73,10 @@ jobs:
       KBM_WHISPERX_MODEL: small
       KBM_WHISPERX_DEVICE: cpu
       KBM_WHISPERX_COMPUTE_TYPE: int8
+      KBM_WHISPERX_VAD_METHOD: silero
+      KBM_WHISPERX_VAD_ONSET: '0.25'
+      KBM_WHISPERX_VAD_OFFSET: '0.20'
+      KBM_ASR_PREPROCESS_FINAL_MIX: '1'
       KBM_WHISPERX_EXPECTED_VERSION: '3.8.6'
       KBM_TOPIC: ${{ inputs.topic || 'معرفی بیل مکانیکی سنگین برای پروژه‌های عمرانی' }}
       KBM_VERTICAL: ${{ inputs.vertical || 'machine-sale' }}
