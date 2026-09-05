@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
+import subprocess
 import time
 import urllib.error
 import urllib.request
@@ -108,6 +110,43 @@ def _request_speech(provider: str, config: dict[str, str], payload: dict[str, An
     raise RuntimeError(last)
 
 
+
+def _local_persian_tts_fallback(text: str, destination: Path) -> dict[str, Any]:
+    espeak = shutil.which("espeak-ng")
+    ffmpeg = shutil.which("ffmpeg")
+    if not espeak or not ffmpeg:
+        raise RuntimeError("LOCAL_PERSIAN_TTS_FALLBACK_UNAVAILABLE")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    wave = destination.with_suffix(".local-fallback.wav")
+    try:
+        speech = subprocess.run(
+            [espeak, "-v", "fa", "-s", "142", "-p", "48", "-a", "180", "-w", str(wave), text],
+            check=False, capture_output=True, text=True, timeout=180,
+        )
+        if speech.returncode != 0 or not wave.is_file() or wave.stat().st_size < 1024:
+            raise RuntimeError("LOCAL_PERSIAN_TTS_SYNTHESIS_FAILED: " + _safe_excerpt(speech.stderr))
+        encode = subprocess.run(
+            [
+                ffmpeg, "-y", "-hide_banner", "-loglevel", "error", "-i", str(wave),
+                "-af", "highpass=f=80,lowpass=f=9000,loudnorm=I=-16:TP=-1.5:LRA=11",
+                "-c:a", "libmp3lame", "-b:a", "192k", str(destination),
+            ],
+            check=False, capture_output=True, text=True, timeout=180,
+        )
+        if encode.returncode != 0 or not destination.is_file() or destination.stat().st_size < 1024:
+            raise RuntimeError("LOCAL_PERSIAN_TTS_ENCODING_FAILED: " + _safe_excerpt(encode.stderr))
+    finally:
+        wave.unlink(missing_ok=True)
+    return {
+        "provider": "kbm-local-offline-tts",
+        "model": "espeak-ng-fa",
+        "voice": "fa",
+        "kind": "speech",
+        "path": str(destination),
+        "bytes": destination.stat().st_size,
+        "contentType": "audio/mpeg",
+    }
+
 def synthesize_speech(
     text: str,
     destination: Path,
@@ -131,13 +170,18 @@ def synthesize_speech(
         "response_format": "mp3",
     }
     try:
-        raw, headers = _request_speech(provider, config, payload, attempts=3)
-    except RuntimeError as first:
-        lowered = str(first).lower()
-        if "http 400" not in lowered and "unsupported" not in lowered and "unknown parameter" not in lowered:
-            raise
-        compatibility_payload = {key: value for key, value in payload.items() if key != "instructions"}
-        raw, headers = _request_speech(provider, config, compatibility_payload, attempts=2)
+        try:
+            raw, headers = _request_speech(provider, config, payload, attempts=3)
+        except RuntimeError as first:
+            lowered = str(first).lower()
+            if "http 400" not in lowered and "unsupported" not in lowered and "unknown parameter" not in lowered:
+                raise
+            compatibility_payload = {key: value for key, value in payload.items() if key != "instructions"}
+            raw, headers = _request_speech(provider, config, compatibility_payload, attempts=2)
+    except RuntimeError:
+        if os.environ.get("KBM_LOCAL_TTS_FALLBACK", "1").strip() == "1":
+            return _local_persian_tts_fallback(text, destination)
+        raise
 
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_bytes(raw)
