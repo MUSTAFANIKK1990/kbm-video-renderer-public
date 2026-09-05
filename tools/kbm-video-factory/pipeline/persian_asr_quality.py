@@ -6,6 +6,7 @@ import importlib.metadata
 import json
 import os
 import re
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Any, Callable
@@ -122,6 +123,28 @@ def runtime_report() -> dict[str, Any]:
     }
 
 
+
+def _speech_enhanced_source(source: Path, workspace: Path) -> Path:
+    if os.environ.get("KBM_ASR_PREPROCESS_FINAL_MIX", "0").strip() != "1":
+        return source
+    if source.suffix.lower() not in {".mp4", ".mov", ".mkv", ".webm"}:
+        return source
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        return source
+    enhanced = workspace / f"{source.stem}-speech-enhanced.wav"
+    command = [
+        ffmpeg, "-y", "-hide_banner", "-loglevel", "error", "-i", str(source),
+        "-vn", "-ac", "1", "-ar", "16000",
+        "-af", "highpass=f=100,lowpass=f=5500,afftdn=nf=-25,loudnorm=I=-18:TP=-3:LRA=7",
+        str(enhanced),
+    ]
+    completed = subprocess.run(command, check=False, capture_output=True, timeout=180)
+    if completed.returncode == 0 and enhanced.is_file() and enhanced.stat().st_size > 4096:
+        return enhanced
+    enhanced.unlink(missing_ok=True)
+    return source
+
 def transcribe_media(
     source: Path,
     destination: Path,
@@ -137,8 +160,9 @@ def transcribe_media(
     workspace = (output_dir or destination.parent / f"{destination.stem}-whisperx").resolve()
     workspace.mkdir(parents=True, exist_ok=True)
     model, device, compute_type = resolve_runtime(None, None, None)
+    asr_source = _speech_enhanced_source(source, workspace)
     command = build_command(
-        source,
+        asr_source,
         workspace,
         language=language,
         model=model,
@@ -148,7 +172,7 @@ def transcribe_media(
     completed = runner(command, check=False)
     if completed.returncode != 0:
         raise RuntimeError(f"WhisperX failed with exit code {completed.returncode}")
-    raw_path = find_transcript(workspace, source)
+    raw_path = find_transcript(workspace, asr_source)
     data = json.loads(raw_path.read_text(encoding="utf-8"))
     if not isinstance(data, dict) or not transcript_text(data):
         raise RuntimeError("WhisperX transcript is empty")
