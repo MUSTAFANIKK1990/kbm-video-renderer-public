@@ -204,7 +204,7 @@ def _deterministic_critic_fallback(
     metrics = {
         "hook": 8.6 if scenes else 0.0,
         "pacing": 8.6 if max_unchanged <= 2.5 else 7.2,
-        "brollRelevance": 8.6 if external_assets else 6.5,
+        "brollRelevance": 8.6 if external_assets or (website_required and int(roles.get("website") or 0) > 0) else 6.5,
         "shotVariety": 8.6 if role_count >= 4 else 7.2,
         "brandVisibility": 8.6 if brand.get("requireLogo") is True else 0.0,
         "captionReadability": 8.6 if int(caption.get("maxLines") or 2) <= 2 and int(caption.get("outlinePx") or 0) >= 3 and (bool(caption.get("pill")) or int(caption.get("fontSize") or 0) >= 44) else 6.5,
