@@ -8,6 +8,8 @@ on:
       - tools/kbm-video-factory/pipeline/tts_client.py
       - tools/kbm-video-factory/pipeline/whisperx_adapter.py
       - tools/kbm-video-factory/pipeline/persian_asr_quality.py
+      - tools/kbm-video-factory/pipeline/orchestrator_v2.py
+      - tools/kbm-video-factory/pipeline/orchestrator_v41.py
       - tools/kbm-video-factory/pipeline/orchestrator_camp.py
       - .github/workflows/kbm-topic-reel-no-publish.yml
   workflow_dispatch:
