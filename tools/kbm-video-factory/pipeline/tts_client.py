@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -111,6 +112,64 @@ def _request_speech(provider: str, config: dict[str, str], payload: dict[str, An
 
 
 
+def _piper_persian_tts_fallback(text: str, destination: Path) -> dict[str, Any]:
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        raise RuntimeError("PIPER_PERSIAN_TTS_FFMPEG_UNAVAILABLE")
+    probe = subprocess.run(
+        [sys.executable, "-c", "import piper"],
+        check=False, capture_output=True, text=True, timeout=30,
+    )
+    if probe.returncode != 0:
+        install = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "--no-cache-dir", "piper-tts==1.4.2"],
+            check=False, capture_output=True, text=True, timeout=300,
+        )
+        if install.returncode != 0:
+            raise RuntimeError("PIPER_PERSIAN_TTS_INSTALL_FAILED: " + _safe_excerpt(install.stderr))
+    cache = Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "kbm-piper-fa"
+    cache.mkdir(parents=True, exist_ok=True)
+    model = cache / "fa_IR-ganji_adabi-medium.onnx"
+    config = cache / "fa_IR-ganji_adabi-medium.onnx.json"
+    base = "https://huggingface.co/rhasspy/piper-voices/resolve/main/fa/fa_IR/ganji_adabi/medium"
+    for target in (model, config):
+        if target.is_file() and target.stat().st_size >= 1024:
+            continue
+        request = urllib.request.Request(f"{base}/{target.name}", headers={"User-Agent": "KBM-Video-Factory/Piper-Voice-01"})
+        with urllib.request.urlopen(request, timeout=300) as response, target.open("wb") as handle:
+            shutil.copyfileobj(response, handle)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    wave = destination.with_suffix(".piper-fallback.wav")
+    try:
+        speech = subprocess.run(
+            [sys.executable, "-m", "piper", "-m", str(model), "-c", str(config), "-f", str(wave), "--", text],
+            check=False, capture_output=True, text=True, timeout=300,
+        )
+        if speech.returncode != 0 or not wave.is_file() or wave.stat().st_size < 1024:
+            raise RuntimeError("PIPER_PERSIAN_TTS_SYNTHESIS_FAILED: " + _safe_excerpt(speech.stderr))
+        encode = subprocess.run(
+            [
+                ffmpeg, "-y", "-hide_banner", "-loglevel", "error", "-i", str(wave),
+                "-af", "highpass=f=80,lowpass=f=9000,loudnorm=I=-16:TP=-1.5:LRA=11",
+                "-c:a", "libmp3lame", "-b:a", "192k", str(destination),
+            ],
+            check=False, capture_output=True, text=True, timeout=180,
+        )
+        if encode.returncode != 0 or not destination.is_file() or destination.stat().st_size < 1024:
+            raise RuntimeError("PIPER_PERSIAN_TTS_ENCODING_FAILED: " + _safe_excerpt(encode.stderr))
+    finally:
+        wave.unlink(missing_ok=True)
+    return {
+        "provider": "kbm-local-neural-tts",
+        "model": "piper-fa_IR-ganji_adabi-medium",
+        "voice": "ganji_adabi",
+        "kind": "speech",
+        "path": str(destination),
+        "bytes": destination.stat().st_size,
+        "contentType": "audio/mpeg",
+    }
+
+
 def _local_persian_tts_fallback(text: str, destination: Path) -> dict[str, Any]:
     espeak = shutil.which("espeak-ng")
     ffmpeg = shutil.which("ffmpeg")
@@ -180,7 +239,10 @@ def synthesize_speech(
             raw, headers = _request_speech(provider, config, compatibility_payload, attempts=2)
     except RuntimeError:
         if os.environ.get("KBM_LOCAL_TTS_FALLBACK", "1").strip() == "1":
-            return _local_persian_tts_fallback(text, destination)
+            try:
+                return _piper_persian_tts_fallback(text, destination)
+            except Exception:
+                return _local_persian_tts_fallback(text, destination)
         raise
 
     destination.parent.mkdir(parents=True, exist_ok=True)
