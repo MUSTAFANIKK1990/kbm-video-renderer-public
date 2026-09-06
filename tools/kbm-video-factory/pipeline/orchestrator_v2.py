@@ -62,6 +62,15 @@ def _run(command: list[str]) -> None:
     subprocess.run(command, check=True)
 
 
+def _extend_caption_tail(captions: list[dict[str, Any]], duration_seconds: float, fps: int = 30) -> list[dict[str, Any]]:
+    if not captions or duration_seconds <= 0:
+        return captions
+    output = [dict(item) for item in captions]
+    target_frame = max(int(round(duration_seconds * fps)), int(output[-1].get("to") or 0) + 1)
+    output[-1]["to"] = target_frame
+    return output
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="KBM Package 09 smart non-blocking raw-footage editor")
     parser.add_argument("--input", required=True)
@@ -279,6 +288,7 @@ def main() -> int:
             if voice_pronunciation.get("pass") is not True:
                 raise RuntimeError("Persian pronunciation lexicon review failed")
             captions = convert(voice_asr, fps=30, max_words=5, max_chars=42, gap_seconds=0.65)
+            captions = _extend_caption_tail(captions, caption_duration + 0.5, fps=30)
             if not captions or not all(
                 isinstance(item.get("words"), list) and item.get("words")
                 for item in captions
